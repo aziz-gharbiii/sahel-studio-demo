@@ -1,0 +1,338 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SAHEL STUDIO — Streetwear, essayage virtuel 3D</title>
+<meta name="description" content="SAHEL STUDIO — streetwear oversize. Habillez le modèle en 3D, choisissez couleur et taille, commandez en 1 minute. Livraison partout en Tunisie.">
+<meta property="og:title" content="SAHEL STUDIO — Essayage virtuel 3D">
+<meta property="og:description" content="Habillez le modèle, choisissez couleur et taille, paiement à la livraison.">
+<meta property="og:image" content="assets/img/look-1.webp">
+<meta name="theme-color" content="#efeceb">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- LOADER -->
+<div class="loader" id="loader" aria-hidden="true">
+  <div class="loader__brand"><span>SAHEL</span><span>STUDIO</span></div>
+  <div class="loader__count"><span id="loadCount">0</span>%</div>
+  <div class="loader__bar"><i id="loadBar"></i></div>
+</div>
+
+<div class="cursor" id="cursor" aria-hidden="true"><span id="cursorLabel"></span></div>
+
+<!-- HEADER (comme le reel : nav discrète, logo centré) -->
+<header class="header" id="header">
+  <nav class="header__nav">
+    <a href="#shop" data-magnetic>Shop</a>
+    <a href="#drop" data-magnetic>Drop</a>
+    <a href="#product" data-magnetic>Produit</a>
+  </nav>
+  <a href="#top" class="header__logo" aria-label="SAHEL STUDIO accueil">SAHEL<sup>®</sup> STUDIO</a>
+  <div class="header__actions">
+    <span class="header__ship">Livraison 24–48h · Tunisie</span>
+    <button class="cart-btn" id="cartOpen" data-magnetic aria-label="Ouvrir le panier">Panier (<span id="cartCount">0</span>)</button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- 1. HERO : cabine d'essayage 3D -->
+  <section class="hero" id="hero">
+    <div class="hero__word" aria-hidden="true"><span>SAHEL</span></div>
+    <canvas id="dresser" aria-hidden="true"></canvas>
+    <div class="gender" id="gender" role="tablist" aria-label="Choisir le modèle">
+      <button data-set="femme" role="tab">Femme</button>
+      <button class="is-active" data-set="homme" role="tab">Homme</button>
+      <i class="gender__pill" aria-hidden="true"></i>
+    </div>
+    <img class="hero__fallback" src="assets/img/model-mb.webp" alt="Modèle portant l'ensemble oversize SAHEL">
+
+    <div class="hero__copy">
+      <div class="chips" id="prodChips" aria-label="Choisir le vêtement"></div>
+      <h1 class="hero__title">
+        <span class="line"><span id="heroT1">The Heavyweight</span></span>
+        <span class="line"><span id="heroT2">Hoodie</span></span>
+      </h1>
+      <p class="hero__lead">Designed for movement. Built for every season. Choisissez une couleur, le modèle l'enfile en direct.</p>
+      <div class="hero__product">
+        <div class="hero__name"><span id="colorName">Hoodie Boxy Heavyweight · Vert Bouteille</span></div>
+        <p class="hero__meta"><span id="heroMeta">Coupe boxy · passepoil contrasté · molleton 500 g/m²</span> · <b id="heroPrice">199 DT</b></p>
+        <div class="sizes sizes--hero" id="heroSizes" aria-label="Taille"></div>
+        <button class="btn btn--dark" id="heroAdd" data-magnetic>Ajouter au panier</button>
+      </div>
+    </div>
+
+    <div class="hero__side">
+      <div class="hero__counter"><span id="heroIdx">01</span> / <span id="heroTotal">07</span></div>
+      <ul class="swatches" id="swatches" aria-label="Choisir une couleur"></ul>
+    </div>
+
+    <div class="hero__dots" id="heroDots" aria-hidden="true"></div>
+    <button class="arrow arrow--l" id="prev" aria-label="Couleur précédente">←</button>
+    <button class="arrow arrow--r" id="next" aria-label="Couleur suivante">→</button>
+    <p class="hero__hint">Scroll pour habiller ↓</p>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee__track">
+      <span>Essayage virtuel 3D</span><i>✦</i><span>Oversize heavyweight</span><i>✦</i><span>Paiement à la livraison</span><i>✦</i><span>Échange 14 jours</span><i>✦</i>
+      <span>Essayage virtuel 3D</span><i>✦</i><span>Oversize heavyweight</span><i>✦</i><span>Paiement à la livraison</span><i>✦</i><span>Échange 14 jours</span><i>✦</i>
+    </div>
+  </div>
+
+  <!-- 2. ZOOM-THROUGH (comme le reel : gros plan -> silhouette entière) -->
+  <section class="zoom" id="drop">
+    <div class="zoom__sticky">
+      <div class="zoom__word zoom__word--back" aria-hidden="true">DROP 04</div>
+      <div class="zoom__frame"><img src="assets/img/look-1.webp" alt="Look SAHEL : cuir rouge et noir" id="zoomImg"></div>
+      <div class="zoom__word zoom__word--front" aria-hidden="true">DROP 04</div>
+      <div class="zoom__caption">
+        <p class="eyebrow">Hiver 26</p>
+        <p>Pièces lourdes, coupes larges, détails nets. Pensé à Tunis, porté partout.</p>
+        <a href="#shop" class="btn btn--light" data-magnetic>Découvrir le drop</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. LOOKBOOK EN TUILES (comme le reel : révélation en blocs) -->
+  <section class="lookbook" id="lookbook">
+    <div class="lookbook__sticky">
+      <div class="lookbook__copy">
+        <p class="eyebrow">Lookbook</p>
+        <h2 class="lookbook__title"><span id="lookTitle">Rouge 01</span></h2>
+        <p class="lookbook__desc" id="lookDesc">Cuir rouge vernis, pantalon large, sneakers montantes.</p>
+        <div class="lookbook__idx"><span id="lookIdx">01</span> — 04</div>
+        <div class="lookbook__bar"><i id="lookBar"></i></div>
+      </div>
+      <div class="tiles" id="tiles" aria-hidden="true"></div>
+      <div class="lookbook__thumbs" id="lookThumbs"></div>
+    </div>
+  </section>
+
+  <!-- 4. PAGE PRODUIT (comme le reel : texte | produit | détails) + viewer 3D -->
+  <section class="pdp" id="product">
+    <div class="pdp__left">
+      <p class="eyebrow">Pensé pour durer</p>
+      <h2 class="pdp__title">Cut once.<br>Worn for<br>years.</h2>
+      <p class="pdp__text">Coton et nylon lourds, coutures renforcées, coupe pensée pour tomber parfaitement en oversize. Chaque pièce est testée 30 lavages avant de rejoindre la collection.</p>
+      <ul class="pdp__specs">
+        <li><b>420–480 g</b><span>Grammage</span></li>
+        <li><b>30×</b><span>Lavages testés</span></li>
+        <li><b>14 j</b><span>Échange</span></li>
+      </ul>
+    </div>
+    <div class="pdp__center">
+      <canvas id="viewer" aria-label="Vue 3D du produit, glisser pour tourner" data-cursor="Tourner"></canvas>
+      <p class="pdp__drag">⟲ Glisser pour tourner</p>
+      <div class="pdp__picker" id="pdpPicker"></div>
+    </div>
+    <div class="pdp__right">
+      <p class="eyebrow" id="pdpCat">Femme · Essayage 3D</p>
+      <h3 class="pdp__name" id="pdpName">Puffer Oversize</h3>
+      <p class="pdp__price" id="pdpPrice">289 DT</p>
+      <p class="eyebrow">Couleur — <span id="pdpColorName">Ivoire</span></p>
+      <div class="colors" id="pdpColors"></div>
+      <p class="eyebrow">Taille <button class="pdp__guide" id="sizeGuide">Guide des tailles</button></p>
+      <div class="sizes" id="pdpSizes"></div>
+      <p class="eyebrow">Quantité</p>
+      <div class="qty qty--lg"><button id="pdpMinus" aria-label="Moins">−</button><span id="pdpQty">1</span><button id="pdpPlus" aria-label="Plus">+</button></div>
+      <button class="btn btn--dark btn--full" id="pdpAdd">Ajouter au panier</button>
+      <button class="tryon" id="pdpTry">✦ Voir sur le modèle</button>
+      <p class="pdp__stock"><i></i> En stock · expédié sous 24h</p>
+    </div>
+  </section>
+
+  <!-- 5. SHOP -->
+  <section class="shop" id="shop">
+    <div class="shop__head">
+      <h2 class="section-title" data-reveal>Shop all</h2>
+      <div class="filters" id="filters" role="tablist">
+        <button class="is-active" data-filter="all">Tout</button>
+        <button data-filter="femme">Femme</button>
+        <button data-filter="homme">Homme</button>
+      </div>
+    </div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- 6. FEED INSTAGRAM (comme le reel) -->
+  <section class="insta">
+    <div class="insta__head">
+      <h2 class="section-title section-title--sm" data-reveal>@sahelstudio</h2>
+      <a href="#" class="btn btn--dark" data-magnetic>Suivre sur Instagram</a>
+    </div>
+    <div class="insta__row" id="instaRow"></div>
+  </section>
+
+  <!-- PROMESSES -->
+  <section class="promises">
+    <div class="promise" data-reveal>
+      <span class="promise__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 10h20M6 15h4"/></svg></span>
+      <div><h3>Paiement à la livraison</h3><p>Vous payez en espèces quand vous recevez votre colis. Partout en Tunisie.</p></div>
+    </div>
+    <div class="promise" data-reveal>
+      <span class="promise__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg></span>
+      <div><h3>Livraison 24–48h</h3><p>Grand Tunis en 24h, le reste du pays en 48h. Livraison offerte dès 200 DT.</p></div>
+    </div>
+    <div class="promise" data-reveal>
+      <span class="promise__ico" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg></span>
+      <div><h3>Échange 14 jours</h3><p>Pas la bonne taille ? On échange gratuitement, sans prise de tête.</p></div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="cta">
+    <h2 class="cta__title" data-reveal>Drop 05<br>arrive bientôt.</h2>
+    <form class="cta__form" id="newsletter">
+      <label for="nlPhone" class="sr-only">Numéro WhatsApp</label>
+      <input id="nlPhone" type="tel" inputmode="tel" placeholder="Votre numéro WhatsApp" required>
+      <button class="btn btn--dark" data-magnetic>Être prévenu</button>
+    </form>
+    <p class="cta__ok" id="nlOk" hidden>C'est noté ✦ On vous écrit avant tout le monde.</p>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <a href="#top" class="footer__logo">SAHEL<sup>®</sup> STUDIO</a>
+      <p>Streetwear heavyweight pensé à Tunis. Essayez chaque pièce en 3D avant de commander.</p>
+      <div class="footer__social">
+        <a href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="#" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 3c.5 2.5 2.5 4.5 5 4.8"/></svg></a>
+        <a href="https://wa.me/21600000000" aria-label="WhatsApp"><svg viewBox="0 0 24 24"><path d="M4 20l1.3-3.8A8 8 0 1 1 8 19z"/><path d="M9 9.5c.3 2 2.2 4 4.5 4.6l1.2-1.2 2 .9c-.3 1.2-1.3 2-2.6 1.8C10.8 15 8.5 12.7 8 10c-.2-1.3.6-2.3 1.8-2.6l.9 2z"/></svg></a>
+      </div>
+    </div>
+    <nav class="footer__col"><h4>Boutique</h4><a href="#shop">Homme</a><a href="#shop">Femme</a><a href="#product">Hoodie Heavyweight</a><a href="#drop">Nouveautés</a></nav>
+    <nav class="footer__col"><h4>Aide</h4><a href="#" data-open-guide>Guide des tailles</a><a href="#">Livraison & retours</a><a href="#">Paiement</a><a href="#">Suivre ma commande</a></nav>
+    <div class="footer__col"><h4>Contact</h4><a href="https://wa.me/21600000000">WhatsApp : +216 00 000 000</a><a href="mailto:contact@sahelstudio.tn">contact@sahelstudio.tn</a><p>Tunis, Tunisie</p><p>Lun – Sam · 10h – 19h</p></div>
+  </div>
+  <div class="footer__bar">
+    <span>© 2026 SAHEL STUDIO · Site démo</span>
+    <span class="footer__pay"><b>Paiement à la livraison</b><b>Livraison 24–48h</b><b>Échange 14 j</b></span>
+  </div>
+  <div class="footer__giant" aria-hidden="true">SAHEL</div>
+</footer>
+
+<!-- GUIDE DES TAILLES -->
+<div class="modal modal--small" id="guide" aria-hidden="true">
+  <div class="modal__backdrop" data-guide-close></div>
+  <div class="modal__panel modal__panel--guide" role="dialog" aria-modal="true" aria-labelledby="guideTitle">
+    <button class="modal__close" data-guide-close aria-label="Fermer">✕</button>
+    <h3 id="guideTitle">Guide des tailles</h3>
+    <p class="modal__desc">Coupe oversize : prenez votre taille habituelle pour un effet ample, une taille en dessous pour un tombé plus net.</p>
+    <table class="guide">
+      <thead><tr><th>Taille</th><th>Poitrine</th><th>Longueur</th><th>Taille (cm)</th></tr></thead>
+      <tbody>
+        <tr><td>XS</td><td>116</td><td>66</td><td>155–163</td></tr>
+        <tr><td>S</td><td>122</td><td>68</td><td>163–170</td></tr>
+        <tr><td>M</td><td>128</td><td>70</td><td>170–177</td></tr>
+        <tr><td>L</td><td>134</td><td>72</td><td>177–184</td></tr>
+        <tr><td>XL</td><td>140</td><td>74</td><td>184–192</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- QUICK VIEW -->
+<div class="modal" id="modal" aria-hidden="true">
+  <div class="modal__backdrop" data-close></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="qvName">
+    <button class="modal__close" data-close aria-label="Fermer">✕</button>
+    <div class="modal__media"><img id="qvImg" alt=""></div>
+    <div class="modal__info">
+      <p class="eyebrow" id="qvCat"></p>
+      <h3 id="qvName"></h3>
+      <p class="modal__price" id="qvPrice"></p>
+      <p class="modal__desc" id="qvDesc"></p>
+      <p class="eyebrow">Couleur — <span id="qvColorName"></span></p>
+      <div class="colors" id="qvColors"></div>
+      <p class="eyebrow">Taille</p>
+      <div class="sizes" id="qvSizes"></div>
+      <div class="modal__actions">
+        <button class="btn btn--dark btn--full" id="qvAdd">Ajouter au panier</button>
+        <button class="tryon" id="qvTry">✦ Essayer sur le modèle</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PANIER / COMMANDE -->
+<aside class="cart" id="cart" aria-hidden="true">
+  <div class="cart__backdrop" data-cart-close></div>
+  <div class="cart__panel" data-step="cart" id="cartPanel">
+    <div class="cart__head">
+      <button class="cart__back" id="cartBack" aria-label="Retour au panier">←</button>
+      <h3 id="cartTitle">Panier</h3>
+      <div class="steps" aria-hidden="true"><i class="is-on"></i><i></i><i></i></div>
+      <button data-cart-close aria-label="Fermer le panier">✕</button>
+    </div>
+
+    <div class="cart__view" data-view="cart">
+      <ul class="cart__items" id="cartItems"></ul>
+      <div class="cart__foot">
+        <div class="cart__ship" id="cartShip"></div>
+        <div class="cart__total"><span>Total</span><b id="cartTotal">0 DT</b></div>
+        <button class="btn btn--dark btn--full" id="toCheckout">Passer la commande →</button>
+        <p class="cart__note">Paiement à la livraison · Échange 14 jours</p>
+      </div>
+    </div>
+
+    <form class="cart__view checkout" data-view="checkout" id="checkoutForm" novalidate>
+      <div class="checkout__body">
+        <p class="eyebrow">Vos informations</p>
+        <div class="field"><input id="coName" name="name" autocomplete="name" required placeholder=" "><label for="coName">Nom et prénom</label><small>Indiquez votre nom complet</small></div>
+        <div class="field field--tel"><span class="field__pre">+216</span><input id="coPhone" name="phone" type="tel" inputmode="numeric" autocomplete="tel-national" required placeholder=" " maxlength="10"><label for="coPhone">Téléphone</label><small>8 chiffres, ex. 22 123 456</small></div>
+        <div class="field field--select"><select id="coGov" name="gov" required><option value="" selected disabled></option></select><label for="coGov">Gouvernorat</label><small>Choisissez votre gouvernorat</small></div>
+        <div class="field"><input id="coCity" name="city" autocomplete="address-level2" required placeholder=" "><label for="coCity">Ville / Délégation</label><small>Indiquez votre ville</small></div>
+        <div class="field"><input id="coAddr" name="address" autocomplete="street-address" required placeholder=" "><label for="coAddr">Adresse complète</label><small>Rue, numéro, repère…</small></div>
+        <div class="field"><textarea id="coNote" name="note" rows="2" placeholder=" "></textarea><label for="coNote">Note pour le livreur (optionnel)</label></div>
+
+        <p class="eyebrow" style="margin-top:22px">Livraison</p>
+        <label class="opt"><input type="radio" name="ship" value="standard" checked><span><b>Standard · 24–48h</b><em id="shipStdPrice">8 DT</em></span></label>
+        <label class="opt"><input type="radio" name="ship" value="express"><span><b>Express Grand Tunis · le jour même</b><em>15 DT</em></span></label>
+
+        <p class="eyebrow" style="margin-top:22px">Paiement</p>
+        <label class="opt"><input type="radio" name="pay" value="cod" checked><span><b>Paiement à la livraison</b><em>Espèces</em></span></label>
+        <label class="opt"><input type="radio" name="pay" value="card"><span><b>Carte bancaire</b><em>Bientôt</em></span></label>
+
+        <div class="summary" id="coSummary"></div>
+      </div>
+      <div class="cart__foot">
+        <div class="cart__total"><span>Total à payer</span><b id="coTotal">0 DT</b></div>
+        <button class="btn btn--dark btn--full" type="submit" id="placeOrder">Confirmer la commande</button>
+        <p class="cart__note">En confirmant, vous acceptez nos conditions de vente.</p>
+      </div>
+    </form>
+
+    <div class="cart__view done" data-view="done">
+      <div class="done__check" aria-hidden="true"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="24"/><path d="M15 27l7 7 15-15"/></svg></div>
+      <h3>Merci <span id="doneName"></span> !</h3>
+      <p>Votre commande <b id="doneId"></b> est confirmée. Notre équipe vous appelle au <b id="donePhone"></b> pour valider la livraison.</p>
+      <div class="summary" id="doneSummary"></div>
+      <a class="btn btn--full done__wa" id="doneWa" href="#" target="_blank" rel="noopener">Suivre ma commande sur WhatsApp</a>
+      <button class="btn btn--dark btn--full" data-cart-close>Continuer mes achats</button>
+    </div>
+  </div>
+</aside>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+} }
+</script>
+<script>if("scrollRestoration" in history)history.scrollRestoration="manual";</script>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
