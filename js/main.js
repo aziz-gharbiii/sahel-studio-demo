@@ -593,7 +593,7 @@ $("#newsletter").addEventListener("submit", (e) => { e.preventDefault(); e.targe
   const CH = [0, 0.22, 0.47, 0.8];             // début de chaque chapitre
   const COL0 = 0.47, COL1 = 0.79;              // fenêtre où les teintes défilent
   let story = null, chap = -1, colIdx = 0;
-  const chaps = $$(".chap"), cards = $$(".fcard"), rail = $$(".story__rail i");
+  const chaps = $$(".chap"), cards = $$(".story .fcard"), rail = $$(".story__rail i");
 
   function setChap(c) {
     if (c === chap) return;
@@ -699,3 +699,7 @@ gsap.from(".insta__item", { x: 120, opacity: 0, duration: 1.2, stagger: 0.06, ea
 })();
 
 boot();
+
+/* ================= RACCORD HERO -> STORY : la caméra plonge vers la poitrine du modèle ================= */
+gsap.fromTo("#hero", { "--hx": 0 }, { "--hx": 1, ease: "power1.in",
+  scrollTrigger: { trigger: ".marquee", start: "top bottom", end: "top top", scrub: true } });
