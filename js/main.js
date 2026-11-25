@@ -370,7 +370,7 @@ async function initHero() {
 
   heroST = ScrollTrigger.create({
     trigger: "#hero", start: "top top", end: () => "+=" + innerHeight * 0.6 * (N - 1),
-    pin: true, anticipatePin: 1,
+    pin: true, anticipatePin: 1, refreshPriority: 1,
     onUpdate: (self) => dresser.setTarget(self.progress * (N - 1)),
     snap: { snapTo: 1 / (N - 1), duration: { min: 0.35, max: 0.9 }, delay: 0.08, ease: "power3.inOut" },
   });
@@ -585,13 +585,73 @@ gsap.from("#tiles", { clipPath: "inset(18% 18% 18% 18%)", scale: 0.9, ease: "non
 gsap.from(".footer__giant", { yPercent: 40, ease: "none", scrollTrigger: { trigger: ".footer", start: "top bottom", end: "bottom bottom", scrub: true } });
 $("#newsletter").addEventListener("submit", (e) => { e.preventDefault(); e.target.hidden = true; $("#nlOk").hidden = false; });
 
-/* ================= ZOOM-THROUGH (gros plan -> silhouette, comme le reel) ================= */
-gsap.timeline({ scrollTrigger: { trigger: "#drop", start: "top top", end: "bottom bottom", scrub: 1 } })
-  .fromTo(".zoom__frame", { scale: 2.9 }, { scale: 1, ease: "power2.inOut" }, 0)
-  .fromTo("#zoomImg", { scale: 1.25, yPercent: -8 }, { scale: 1, yPercent: 0, ease: "power2.inOut" }, 0)
-  .fromTo(".zoom__word--back", { scale: 0.7, opacity: 0 }, { scale: 1, opacity: 1, ease: "power2.out" }, 0.1)
-  .fromTo(".zoom__word--front", { scale: 1.35, opacity: 0 }, { scale: 1, opacity: 1, ease: "power2.out" }, 0.25)
-  .from(".zoom__caption", { y: 40, opacity: 0, ease: "power2.out" }, 0.55);
+/* ================= STORY : le scroll joue le "film" du produit (style scroll-cinematic) ================= */
+(() => {
+  const P = PRODUCTS[0];                       // Hoodie Boxy (homme, passepoil)
+  const NC = P.colors.length;
+  // repères du film (progression 0 -> 1 de la section épinglée)
+  const CH = [0, 0.22, 0.47, 0.8];             // début de chaque chapitre
+  const COL0 = 0.47, COL1 = 0.79;              // fenêtre où les teintes défilent
+  let story = null, chap = -1, colIdx = 0;
+  const chaps = $$(".chap"), cards = $$(".fcard"), rail = $$(".story__rail i");
+
+  function setChap(c) {
+    if (c === chap) return;
+    chap = c;
+    $("#stIdx").textContent = String(c + 1).padStart(2, "0");
+    chaps.forEach((el, k) => el.classList.toggle("is-on", k === c));
+    cards.forEach((el) => el.classList.toggle("is-on", +el.dataset.fc === c));
+    rail.forEach((el, k) => el.classList.toggle("is-on", k <= c));
+  }
+  function setColor(i) {
+    i = ((i % NC) + NC) % NC; colIdx = i;
+    const c = P.colors[i];
+    $("#stColor").textContent = c.name; $("#stColorIdx").textContent = i + 1;
+    $("#stDot").style.background = c.hex;
+    $("#storyAdd").textContent = `Ajouter au panier · ${fmt(P.price)}`;
+    document.querySelector(".story").style.setProperty("--st-tint", c.hex);
+    const k = vKey(P.id, i); if (thumbs[k]) $("#stThumb").src = thumbs[k];
+  }
+  setChap(0); setColor(0);
+
+  // la scène WebGL ne se crée qu'à l'approche de la section (le hero charge d'abord)
+  new IntersectionObserver(async ([e], obs) => {
+    if (!e.isIntersecting) return; obs.disconnect();
+    try {
+      story = createDresser($("#storyCanvas"), { dpr: 1.6 });
+      await story.useSet(setDef(P), 0);
+      story.onChange((i) => setColor(i));
+      st.update && update(st.progress);
+    } catch (err) { console.warn("story WebGL indisponible", err); }
+  }, { rootMargin: "120% 0px" }).observe($("#drop"));
+
+  const clamp01 = (x) => Math.max(0, Math.min(1, x));
+  function update(p) {
+    setChap(p < CH[1] ? 0 : p < CH[2] ? 1 : p < CH[3] ? 2 : 3);
+    $("#stBar").style.transform = `scaleY(${p})`;
+    if (story) story.setTarget(clamp01((p - COL0) / (COL1 - COL0)) * NC);   // NC = retour au vert (anneau)
+  }
+
+  // caméra : gros plan tissu -> recul plein pied -> push-in sur le badge
+  const tl = gsap.timeline({ defaults: { ease: "none" } })
+    .fromTo("#storyCam", { scale: 2.25, yPercent: 8 }, { scale: 1, yPercent: 0, duration: 0.3, ease: "power2.inOut" }, 0)
+    .to("#storyCam", { scale: 1.06, duration: 0.5 }, 0.3)
+    .to("#storyCam", { scale: 1.85, yPercent: 10, duration: 0.2, ease: "power2.inOut" }, 0.8)
+    .fromTo(".story__word", { xPercent: 12 }, { xPercent: -28, duration: 1 }, 0)
+    .fromTo(".fcard--a", { y: 40 }, { y: -60, duration: 0.25 }, 0)
+    .fromTo(".fcard--b", { y: 80 }, { y: -30, duration: 0.25 }, 0)
+    .fromTo(".fcard--c", { y: 60 }, { y: -40, duration: 0.25 }, CH[1])
+    .fromTo(".fcard--d", { y: 50 }, { y: -50, duration: 0.33 }, CH[2])
+    .fromTo(".fcard--e", { y: 50 }, { y: -20, duration: 0.2 }, CH[3])
+    .fromTo(".fcard--f", { y: 90 }, { y: 0, duration: 0.2 }, CH[3])
+    .fromTo(".story__hint", { opacity: 1 }, { opacity: 0, duration: 0.06 }, 0.02);
+  const st = ScrollTrigger.create({
+    trigger: "#drop", start: "top top", end: "bottom bottom", scrub: 0.6, animation: tl,
+    onUpdate: (s) => update(s.progress),
+  });
+
+  $("#storyAdd").addEventListener("click", () => addToCart(P, colIdx, "M"));
+})();
 
 /* ================= PAGE PRODUIT + VIEWER 3D ================= */
 let pdp = PRODUCTS[0], pdpColor = 0, pdpSize = "M", pdpQty = 1, viewer = null;

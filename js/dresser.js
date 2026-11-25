@@ -114,11 +114,12 @@ const vec4Of = (hex, original) => { const c = new THREE.Color(hex); return new T
 const EMPTY_TEX = (() => { const t = new THREE.DataTexture(new Uint8Array([0, 0, 0, 255]), 1, 1); t.needsUpdate = true; return t; })();
 const blendOpts = { transparent: true, depthTest: false, blending: THREE.CustomBlending, blendSrc: THREE.OneFactor, blendDst: THREE.OneMinusSrcAlphaFactor };
 
-export function createDresser(canvas) {
+export function createDresser(canvas, opts = {}) {
   THREE.ColorManagement.enabled = false;
   const isMobile = matchMedia("(max-width: 820px)").matches;
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, premultipliedAlpha: true, preserveDrawingBuffer: false });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, isMobile ? 1.5 : 2));
+  // opts.dpr : résolution plus haute quand la caméra CSS zoome dans le canvas (story)
+  renderer.setPixelRatio(opts.dpr ? Math.min(devicePixelRatio * opts.dpr, isMobile ? 2.4 : 3) : Math.min(devicePixelRatio, isMobile ? 1.5 : 2));
   renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
 
   const loader = new THREE.TextureLoader();

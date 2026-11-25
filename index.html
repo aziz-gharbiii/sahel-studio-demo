@@ -11,7 +11,7 @@
 <meta name="theme-color" content="#efeceb">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter+Tight:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -86,17 +86,48 @@
     </div>
   </div>
 
-  <!-- 2. ZOOM-THROUGH (comme le reel : gros plan -> silhouette entière) -->
-  <section class="zoom" id="drop">
-    <div class="zoom__sticky">
-      <div class="zoom__word zoom__word--back" aria-hidden="true">DROP 04</div>
-      <div class="zoom__frame"><img src="assets/img/look-1.webp" alt="Look SAHEL : cuir rouge et noir" id="zoomImg"></div>
-      <div class="zoom__word zoom__word--front" aria-hidden="true">DROP 04</div>
-      <div class="zoom__caption">
-        <p class="eyebrow">Hiver 26</p>
-        <p>Pièces lourdes, coupes larges, détails nets. Pensé à Tunis, porté partout.</p>
-        <a href="#shop" class="btn btn--light" data-magnetic>Découvrir le drop</a>
+  <!-- 2. STORY CINÉMATIQUE : le scroll "joue" le film du produit, chapitre par chapitre -->
+  <section class="story" id="drop">
+    <div class="story__sticky">
+      <div class="story__word" aria-hidden="true">HEAVY</div>
+      <div class="story__cam" id="storyCam"><canvas id="storyCanvas" aria-label="Hoodie Boxy Heavyweight porté, film au scroll"></canvas></div>
+
+      <div class="story__copy">
+        <p class="story__count"><b id="stIdx">01</b> / 04 <span>· Hoodie Boxy Heavyweight</span></p>
+        <div class="story__chapters">
+          <article class="chap is-on" data-chap="0">
+            <h2 class="chap__t"><span><i>Coupé</i></span><span><i><em>dans le lourd.</em></i></span></h2>
+            <p class="chap__p">Molleton 500 g/m², brossé à l'intérieur. Une main épaisse qui garde sa forme, lavage après lavage.</p>
+          </article>
+          <article class="chap" data-chap="1">
+            <h2 class="chap__t"><span><i>Taillé pour</i></span><span><i><em>tomber juste.</em></i></span></h2>
+            <p class="chap__p">Épaules tombantes, coupe boxy, bord-côtes serrés. L'oversize net, jamais l'effet sac.</p>
+          </article>
+          <article class="chap" data-chap="2">
+            <h2 class="chap__t"><span><i>Sept teintes,</i></span><span><i><em>une signature.</em></i></span></h2>
+            <p class="chap__p">Teint en pièce, passepoil contrasté cousu main. Scrolle : le hoodie change de teinte sous tes yeux.</p>
+          </article>
+          <article class="chap" data-chap="3">
+            <h2 class="chap__t"><span><i>Fais-le</i></span><span><i><em>tien.</em></i></span></h2>
+            <p class="chap__p">Choisis ta teinte et ta taille, on livre partout en Tunisie. Paiement à la livraison.</p>
+            <div class="chap__cta"><button class="btn btn--dark" id="storyAdd" data-magnetic>Ajouter · 199 DT</button><a href="#product" class="story__link">Voir le détail →</a></div>
+          </article>
+        </div>
       </div>
+
+      <!-- cartes flottantes (comme les étiquettes du reel) -->
+      <div class="fcard fcard--a" data-fc="0"><span class="fcard__ico">◎</span><div><b>500 g/m²</b><small>Coton brossé lourd</small></div></div>
+      <div class="fcard fcard--b" data-fc="0"><span class="fcard__ico">✦</span><div><b>Passepoil</b><small>Contrasté, cousu main</small></div></div>
+      <div class="fcard fcard--c" data-fc="1"><span class="fcard__ico">⇲</span><div><b>Coupe boxy</b><small>Épaules tombantes</small></div></div>
+      <div class="fcard fcard--d" data-fc="2"><i class="fcard__dot" id="stDot"></i><div><b id="stColor">Vert Bouteille</b><small>Teinte <span id="stColorIdx">1</span> / 7</small></div></div>
+      <div class="fcard fcard--e fcard--prod" data-fc="3">
+        <div class="fcard__thumb"><img id="stThumb" src="assets/img/model-mb.webp" alt=""></div>
+        <div><small>Hoodie Boxy</small><b>199 DT</b><span class="fcard__stars">★★★★★ <em>4,9 · 1 240 avis</em></span></div>
+      </div>
+      <div class="fcard fcard--f" data-fc="3"><span class="fcard__ico">⚡</span><div><b>Livré en 24–48 h</b><small>Partout en Tunisie</small></div></div>
+
+      <div class="story__rail" aria-hidden="true"><i class="is-on"></i><i></i><i></i><i></i><span id="stBar"></span></div>
+      <p class="story__hint" aria-hidden="true">Scrolle pour jouer le film ↓</p>
     </div>
   </section>
 
